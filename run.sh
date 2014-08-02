@@ -1,6 +1,9 @@
 ruby -v
-sudo gem install --no-rdoc --no-ri vmc
-vmc target api.cloudfoundry.com
-vmc login --username $WERCKER_CLOUDFOUNDRY_USERNAME --password $WERCKER_CLOUDFOUNDRY_PASSWORD
-vmc app $WERCKER_CLOUDFOUNDRY_APPNAME
-vmc push --name $WERCKER_CLOUDFOUNDRY_APPNAME --start -f
+wget https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.3.2&source=github-rel
+tar -zxvf cf-linux-amd64.tgz
+cf api https://api.run.pivotal.io
+org=`get_option organization`
+space=`get_option space`
+cf login -u $WERCKER_CLOUDFOUNDRY_USERNAME -p $WERCKER_CLOUDFOUNDRY_PASSWORD -o $org -s $space
+appname=`get_option appname`
+cf push $appname
