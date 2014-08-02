@@ -3,6 +3,8 @@
 Requires a number of ENV variables:
  - WERCKER_CLOUDFOUNDRY_USERNAME
  - WERCKER_CLOUDFOUNDRY_PASSWORD
- - WERCKER_CLOUDFOUNDRY_ORG
- - WERCKER_CLOUDFOUNDRY_SPACE (defaults to development)
- - WERCKER_CLOUDFOUNDRY_APPNAME
+
+Options:
+ - organization
+ - space
+ - appname
