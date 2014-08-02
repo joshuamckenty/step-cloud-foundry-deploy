@@ -1,5 +1,5 @@
 ruby -v
-wget https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.3.2&source=github-rel
+wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/v6.3.2/cf-linux-amd64.tgz
 tar -zxvf cf-linux-amd64.tgz
 cf api https://api.run.pivotal.io
 org=`get_option organization`
