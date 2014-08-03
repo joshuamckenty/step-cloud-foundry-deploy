@@ -2,5 +2,11 @@ ruby -v
 wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/v6.3.2/cf-linux-amd64.tgz
 tar -zxvf cf-linux-amd64.tgz
 ./cf api https://api.run.pivotal.io
-./cf login -u $WERCKER_CLOUDFOUNDRY_USERNAME -p $WERCKER_CLOUDFOUNDRY_PASSWORD -o $WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION -s $WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE
-./cf push $WERCKER_CLOUD_FOUNDRY_DEPLOY_APPNAME
+
+appname=${WERCKER_CLOUD_FOUNDRY_DEPLOY_APPNAME-default_app}
+username=$WERCKER_CLOUD_FOUNDRY_DEPLOY_USERNAME
+password=$WERCKER_CLOUD_FOUNDRY_DEPLOY_PASSWORD
+organization=$WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION
+space=${WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE-development}
+./cf login -u $username -p $password -o $organization -s $space
+./cf push $appname

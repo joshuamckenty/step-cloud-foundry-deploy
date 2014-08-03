@@ -1,10 +1,10 @@
 # cloud-foundry-deploy step
 
-Requires a number of ENV variables:
- - WERCKER_CLOUDFOUNDRY_USERNAME
- - WERCKER_CLOUDFOUNDRY_PASSWORD
+Required parameters can be set as deploy environment variables, OR as options
+under the step in the wercker.yml file.
 
-Options:
- - organization
- - space
- - appname
+ - WERCKER_CLOUD_FOUNDRY_DEPLOY_USERNAME (or option of username)
+ - WERCKER_CLOUD_FOUNDRY_DEPLOY_PASSWORD (or option of password)
+ - WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION (or option of organization)
+ - WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE (or option of space, defaults to development)
+ - WERCKER_CLOUD_FOUNDRY_DEPLOY_APPNAME (or option of appname, defaults to default_app)
