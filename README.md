@@ -8,3 +8,4 @@ under the step in the wercker.yml file.
  - WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION (or option of organization)
  - WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE (or option of space, defaults to development)
  - WERCKER_CLOUD_FOUNDRY_DEPLOY_APPNAME (or option of appname, defaults to default_app)
+ - WERCKER_CLOUD_FOUNDRY_DEPLOY_DOMAIN (or option of domain, defaults to cfapps.io)
