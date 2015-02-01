@@ -12,7 +12,6 @@ domain=${WERCKER_CLOUD_FOUNDRY_DEPLOY_DOMAIN-cfapps.io}
 ./cf login -u $username -p $password -o $organization -s $space
 
 # Basic blue-green here
-ROUTE="$appname.$domain"
 if $(./cf app $appname-a | grep -q started)
 then
   OLD="$appname-a"
@@ -31,8 +30,8 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Re-routing"
-./cf map-route $NEW $ROUTE
-./cf unmap-route $OLD $ROUTE
+./cf map-route $NEW $domain -n $appname
+./cf unmap-route $OLD domain -n $appname
 ./cf stop $OLD
 
 echo "Done"
