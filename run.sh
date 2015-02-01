@@ -31,7 +31,7 @@ fi
 
 echo "Re-routing"
 ./cf map-route $NEW $domain -n $appname
-./cf unmap-route $OLD domain -n $appname
+./cf unmap-route $OLD $domain -n $appname
 ./cf stop $OLD
 
 echo "Done"
