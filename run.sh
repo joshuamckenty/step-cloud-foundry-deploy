@@ -10,4 +10,30 @@ organization=$WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION
 space=${WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE-development}
 domain=${WERCKER_CLOUD_FOUNDRY_DEPLOY_DOMAIN-cfapps.io}
 ./cf login -u $username -p $password -o $organization -s $space
-./cf push $appname -d $domain
+
+# Basic blue-green here
+ROUTE="$appname.$domain"
+if $(./cf app $appname-a | grep -q started)
+then
+  OLD="$appname-a"
+  NEW="$appname-b"
+else
+  OLD="$appname-b"
+  NEW="$appname-a"
+fi
+
+echo "Pushing new app to $NEW and disabling $OLD"
+./cf push $NEW  -d $domain
+if [[ $? -ne 0 ]]; then
+  echo "Error pushing"
+  ./cf stop $NEW
+  exit 1
+fi
+
+echo "Re-routing"
+./cf map-route $NEW $ROUTE
+./cf unmap-route $OLD $ROUTE
+./cf stop $OLD
+
+echo "Done"
+
