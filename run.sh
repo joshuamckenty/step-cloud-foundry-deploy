@@ -9,6 +9,8 @@ password=$WERCKER_CLOUD_FOUNDRY_DEPLOY_PASSWORD
 organization=$WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION
 space=${WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE-development}
 domain=${WERCKER_CLOUD_FOUNDRY_DEPLOY_DOMAIN-cfapps.io}
+host=${WERCKER_CLOUD_FOUNDRY_DEPLOY_HOST-$appname}
+
 ./cf login -u $username -p $password -o $organization -s $space
 
 # Basic blue-green here
@@ -22,7 +24,7 @@ else
 fi
 
 echo "Pushing new app to $NEW and disabling $OLD"
-./cf push $NEW  -d $domain
+./cf push $NEW  -d $domain -n $host
 if [[ $? -ne 0 ]]; then
   echo "Error pushing"
   ./cf stop $NEW
