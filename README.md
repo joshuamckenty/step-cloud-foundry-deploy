@@ -1,11 +1,47 @@
-# cloud-foundry-deploy step
+# cloud-foundry-deploy
 
-Required parameters can be set as deploy environment variables, OR as options
-under the step in the wercker.yml file.
+Deploys the current path to a cloud foundry instance. You
 
- - WERCKER_CLOUD_FOUNDRY_DEPLOY_USERNAME (or option of username)
- - WERCKER_CLOUD_FOUNDRY_DEPLOY_PASSWORD (or option of password)
- - WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION (or option of organization)
- - WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE (or option of space, defaults to development)
- - WERCKER_CLOUD_FOUNDRY_DEPLOY_APPNAME (or option of appname, defaults to default_app)
- - WERCKER_CLOUD_FOUNDRY_DEPLOY_DOMAIN (or option of domain, defaults to cfapps.io)
+# What's new
+
+- Blue-Green Deploys.
+- Support for hosted cloud foundry instances
+
+# Options
+
+* `appname` (required) The application name.
+* `username` (required) Cloud Foundry Username.
+* `password` (required) Cloud Foundry Password.
+* `organization` (required) Cloud Foundry Organization.
+* `space` (required) Cloud Foundry Space.
+* `alt_appname` (optional) Alternative application name for blue-green deploys.
+* `domain` (optional) App domain.
+* `route` (optional, required for blue-green deploys) App route.
+* `api` (optional, default: `https://api.run.pivotal.io`) Cloud Foundry API endpoint.
+* `skip_ssl` (optional) Skip ssl validation on API login.
+
+# Example
+
+Deploy to cloud foundry:
+
+```yaml
+steps:
+  - USERNAME/cloud-foundry-deploy
+...
+deploy:
+  steps:
+    - dlapiduz/cloud-foundry-deploy:
+      api: $CF_API # Set as environment variables
+      username: $CF_USER
+      password: $CF_PASS
+      organization: $CF_ORG
+      space: $CF_SPACE
+      appname: myapp-green
+      alt_appname: myapp-blue
+      route: default_app.cfapps.io
+
+```
+
+# License
+
+The MIT License (MIT)
