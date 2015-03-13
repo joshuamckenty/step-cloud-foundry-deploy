@@ -15,7 +15,8 @@ simple_deploy() {
 blue_green_deploy() {
   local appname="$1";
   local alt_appname="$2";
-  local route="$3";
+  local domain="$3";
+  local hostname="$4"
 
   if $(./cf app $appname | grep -q started); then
     OLD="$appname";
@@ -33,8 +34,12 @@ blue_green_deploy() {
   fi
 
   info "Re-routing"
-  ./cf map-route $NEW $route
-  ./cf unmap-route $OLD $route
+  local map_opts="$domain"
+  if [ -n "$hostname" ]; then
+    map_opts="$map_opts -n $hostname";
+  fi;
+  ./cf map-route $NEW $map_opts
+  ./cf unmap-route $OLD $map_opts
   ./cf stop $OLD
 }
 
@@ -50,7 +55,7 @@ main() {
   local organization="$WERCKER_CLOUD_FOUNDRY_DEPLOY_ORGANIZATION"
   local space="$WERCKER_CLOUD_FOUNDRY_DEPLOY_SPACE"
   local domain="$WERCKER_CLOUD_FOUNDRY_DEPLOY_DOMAIN"
-  local route="$WERCKER_CLOUD_FOUNDRY_DEPLOY_ROUTE"
+  local hostname="$WERCKER_CLOUD_FOUNDRY_DEPLOY_HOSTNAME"
   local api="$WERCKER_CLOUD_FOUNDRY_DEPLOY_API"
   local skip_ssl="$WERCKER_CLOUD_FOUNDRY_DEPLOY_SKIP_SSL"
 
@@ -83,10 +88,10 @@ main() {
 
   if [ -n "$alt_appname" ]; then
     info "Doing Blue-green deploy with $appname and $alt_appname";
-    if [ -z "$route" ]; then
-      fail "route not specified; it is required for blue-green deploys; please add the route parameter to the step";
+    if [ -z "$domain" ]; then
+      fail "domain not specified; it is required for blue-green deploys; please add the domain parameter to the step";
     fi
-    blue_green_deploy "$appname" "$alt_appname" "$route";
+    blue_green_deploy "$appname" "$alt_appname" "$domain" "$hostname";
   else
     info "Pushing app";
     simple_deploy "$appname" "$domain";
