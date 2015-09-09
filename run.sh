@@ -27,7 +27,7 @@ blue_green_deploy() {
   fi
 
   info "Pushing new app to $NEW and disabling $OLD"
-  ./cf push $NEW
+  ./cf push $NEW --no-route
   if [[ $? -ne 0 ]]; then
     ./cf stop $NEW;
     fail "Error pushing app";
